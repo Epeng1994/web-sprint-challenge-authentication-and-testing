@@ -32,8 +32,7 @@ const jwt = require('jsonwebtoken')
 async function validateUser(req,res,next){
     const {username, password} = req.body //destructure variables
     if(username === undefined || username.trim() === '' || typeof username.trim() !== 'string' || password === undefined || password.trim() === ''){
-        next({status:400, message:"username and password required"})
-        return
+        return next({status:400, message:"username and password required"})
     }else{
         next()
     } //check for valid entries
@@ -43,8 +42,7 @@ async function uniqueUser(req,res,next){
     const {username, password} = req.body
     const check = await db('users').where({username})
     if(check.length > 0){
-        next({status:400, message:"username taken"})
-        return
+        return next({status:400, message:"username taken"})
     }else{ //return new user under req.newUser
         req.newUser = {
             username:username,
@@ -82,8 +80,7 @@ async function login(req,res,next){
     const {username, password} = req.body
     const userCheck = await authModel.findUser(username)
     if(userCheck == null || bcrypt.compareSync(password, userCheck.password) === false){
-        next({status:401, message: "invalid credentials"})
-        return
+        return next({status:401, message: "invalid credentials"})
     }else{
         const token = generateToken(username)
         req.userLoggedIn = {
