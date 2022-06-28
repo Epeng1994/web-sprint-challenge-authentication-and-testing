@@ -78,17 +78,17 @@ You are welcome to build additional middlewares to help with the endpoint's func
 
 async function login(req,res,next){
     const {username, password} = req.body
-    await db('users').where({username}).first()
+    authModel.findUser(username)
         .then(result=>{
-            if(result === undefined){
-                return next({status:401, message: "invalid credentials"})
-            }else if(result.password !== undefined && bcrypt.compareSync(password, result.password) === true){
+            if(result !== undefined && bcrypt.compareSync(password, result.password) === true){
                 const token = generateToken(result)
                 req.userLoggedIn = {
-                    message: `welcome, ${result.username}`,
+                    message: `welcome, ${username}`,
                     token: token
                 }
                 return next()
+            }else{
+                return next({status:401, message: "invalid credentials"})
             }
         })
         .catch(next)

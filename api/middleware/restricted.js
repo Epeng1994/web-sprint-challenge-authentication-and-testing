@@ -16,13 +16,14 @@ module.exports = (req, res, next) => {
   const token = req.headers.authorization
   if(token === '' || token === undefined){
     return next({status:401, message:'token required'})
-  } 
-  jwt.verify(token, secret, (err, decode)=>{
-    if(err !== null){
-      return next({status:401,message:'token invalid'})
-    }else{
-      req.decodedJWT = decode
-      next()
-    }
-  })
+  }else{
+    jwt.verify(token, secret, (err, decode)=>{
+      if(err !== null){
+        return next({status:401,message:'token invalid'})
+      }else{
+        req.decodedJWT = decode
+        next()
+      }
+    })
+  }
 };
