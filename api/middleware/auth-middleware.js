@@ -79,10 +79,11 @@ You are welcome to build additional middlewares to help with the endpoint's func
 async function login(req,res,next){
     const {username, password} = req.body
     const userCheck = await db('users').where({username})
+    console.log(userCheck)
     if(userCheck.length < 1 || bcrypt.compareSync(password, userCheck[0].password) === false){
         return next({status:401, message: "invalid credentials"})
     }else{
-        const token = generateToken(username)
+        const token = generateToken(userCheck[0])
         req.userLoggedIn = {
             message: `welcome, ${username}`,
             token: token
@@ -94,7 +95,7 @@ async function login(req,res,next){
 function generateToken(user){ //generate token upon valid login
     //payload, secret, options
     const payload = {
-        subject: user.user_id, 
+        subject: user.id, 
         username: user.username
     }
     const options = {
