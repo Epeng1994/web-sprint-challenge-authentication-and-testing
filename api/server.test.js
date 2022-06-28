@@ -46,8 +46,8 @@ describe('/api/auth tests',()=>{
   test('[4] POST /login Registered User can log in and returns message/token',async()=>{
     const newUser = {username:'Eric', password: '1234'}
     const check = await request(server).post('/api/auth/login').send(newUser)
-    const res = await db('users').where('username', 'Eric')
-    expect(bcrypt.compareSync(newUser.password, res[0].password)).toBeTruthy()
+    const res = await authmodel.findUser(newUser.username)
+    expect(bcrypt.compareSync(newUser.password, res.password)).toBeTruthy()
     expect(check.body).toHaveProperty("message")
     expect(check.body).toHaveProperty("token")
     expect(check.status).toBe(200)

@@ -9,7 +9,7 @@ router.post('/register', validateUser, uniqueUser, (req, res,next) => {
 });
 
 router.post('/login',validateUser, login, (req, res) => {
-  res.json(req.userLoggedIn)
+  res.status(200).send(req.userLoggedIn)
 });
 
 module.exports = router;
