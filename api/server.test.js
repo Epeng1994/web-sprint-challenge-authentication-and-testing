@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs')
 beforeAll(async()=>{
   await db.migrate.rollback()
   await db.migrate.latest()
-  jest.setTimeout(10 * 1000)
+  jest.setTimeout(60 * 1000)
 })
 
 beforeEach(async()=>{
