@@ -8,9 +8,9 @@ const secret = require('./auth/secrets')
 const bcrypt = require('bcryptjs')
 
 beforeAll(async()=>{
+  jest.setTimeout(60 * 1000)
   await db.migrate.rollback()
   await db.migrate.latest()
-  jest.setTimeout(60 * 1000)
 })
 
 beforeEach(async()=>{
@@ -46,10 +46,11 @@ describe('/api/auth tests',()=>{
   test('[4] POST /login Registered User can log in and returns message/token',async()=>{
     const newUser = {username:'Eric', password: '1234'}
     const check = await request(server).post('/api/auth/login').send(newUser)
-    const res = await db('users').where('username', 'Eric').first()
-    expect(bcrypt.compareSync(newUser.password, res.password)).toBeTruthy()
+    const res = await db('users').where('username', 'Eric')
+    expect(bcrypt.compareSync(newUser.password, res[0].password)).toBeTruthy()
     expect(check.body).toHaveProperty("message")
     expect(check.body).toHaveProperty("token")
+    expect(check.status).toBe(200)
   })
   test('[5] /login fails with incorrect credentials',async()=>{
     const fakeUser = {username:'EricClone', password: '12345'}

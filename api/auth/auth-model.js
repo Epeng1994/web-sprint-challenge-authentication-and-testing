@@ -1,7 +1,7 @@
 const db = require('../../data/dbConfig')
 
 async function findUser(username){
-    return await db('users').where({username}).first()
+    return await db('users').where({username})
 }
 
 async function register(user){
