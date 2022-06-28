@@ -3,6 +3,7 @@ const authModel = require('../auth/auth-model')
 const bcrypt = require('bcryptjs')
 const secret = require('../auth/secrets')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
