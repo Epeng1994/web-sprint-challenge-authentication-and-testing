@@ -86,7 +86,7 @@ async function login(req,res,next){
                     message: `welcome, ${username}`,
                     token: token
                 }
-                return next()
+                next()
             }else{
                 return next({status:401, message: "invalid credentials"})
             }

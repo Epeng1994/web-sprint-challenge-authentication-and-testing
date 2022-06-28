@@ -8,7 +8,6 @@ const secret = require('./auth/secrets')
 const bcrypt = require('bcryptjs')
 
 beforeAll(async()=>{
-  jest.setTimeout(60 * 1000)
   await db.migrate.rollback()
   await db.migrate.latest()
 })
